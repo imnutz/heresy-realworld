@@ -30,11 +30,24 @@ const Conduit = {
     }
   },
 
+  isAuthorized(user) {
+    return user && user.token;
+  },
+
   render() {
     const { currentHash } = this.state.header;
+    const { user } = this.state;
+    let navItems;
+
+    if (this.isAuthorized(user)) {
+      navItems = this.state.getAuthorizedNav();
+    } else {
+      navItems = this.state.getUnauthorizedNav();
+    }
+
 
     this.html`
-      <Header .state=${this.state.header}/>
+      <Header .data=${navItems}/>
       ${this.getPage(currentHash)}
       <Footer />
     `;

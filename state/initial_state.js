@@ -25,5 +25,22 @@ export default {
         hash: '#/editor'
       }
     }
+  },
+
+  getUnauthorizedNav() {
+    return [
+      this.header.nav.home,
+      this.header.nav.signin,
+      this.header.nav.singup
+    ];
+  },
+
+  getAuthorizedNav() {
+    return [
+      this.header.nav.home,
+      this.header.nav.settings,
+      this.header.nav.editor,
+      this.header.nav.authorized
+    ]
   }
 }

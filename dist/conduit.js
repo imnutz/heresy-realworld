@@ -3318,8 +3318,8 @@
                              const Header = {
                                extends: "nav",
 
-                               mappedAttributes: ["state"],
-                               onstate() { this.render(); },
+                               mappedAttributes: ["data"],
+                               ondata() { this.render(); },
 
                                oninit() {
                                  this.classList.add("navbar", "navbar-light");
@@ -3334,12 +3334,11 @@
                                },
 
                                render() {
-                                 const { nav } = this.state;
                                  this.html`
       <div class="container">
         <a class="navbar-brand" href="index.html">conduit</a>
         <ul class="nav navbar-nav pull-xs-right">
-          ${Object.keys(nav).map(key => this._renderNavItem(nav[key]))}
+          ${this.data.map(navItem => this._renderNavItem(navItem))}
         </ul>
       </div>
     `;
@@ -3576,11 +3575,24 @@
                                  }
                                },
 
+                               isAuthorized(user) {
+                                 return user && user.token;
+                               },
+
                                render() {
                                  const { currentHash } = this.state.header;
+                                 const { user } = this.state;
+                                 let navItems;
+
+                                 if (this.isAuthorized(user)) {
+                                   navItems = this.state.getAuthorizedNav();
+                                 } else {
+                                   navItems = this.state.getUnauthorizedNav();
+                                 }
+
 
                                  this.html`
-      <Header .state=${this.state.header}/>
+      <Header .data=${navItems}/>
       ${this.getPage(currentHash)}
       <Footer />
     `;
@@ -3614,6 +3626,23 @@
                                      hash: '#/editor'
                                    }
                                  }
+                               },
+
+                               getUnauthorizedNav() {
+                                 return [
+                                   this.header.nav.home,
+                                   this.header.nav.signin,
+                                   this.header.nav.singup
+                                 ];
+                               },
+
+                               getAuthorizedNav() {
+                                 return [
+                                   this.header.nav.home,
+                                   this.header.nav.settings,
+                                   this.header.nav.editor,
+                                   this.header.nav.authorized
+                                 ]
                                }
                              };
 
@@ -3706,7 +3735,11 @@
                                      model.email = null;
                                      model.password = null;
 
-                                     model.user = user;
+                                     model.user = user.user;
+                                     model.header.nav["authorized"] = {
+                                       name: model.user.username,
+                                       hash: "#/profile"
+                                     };
                                    }
 
                                    return model;

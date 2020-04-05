@@ -14,7 +14,11 @@ export default {
         model.email = null;
         model.password = null;
 
-        model.user = user;
+        model.user = user.user;
+        model.header.nav["authorized"] = {
+          name: model.user.username,
+          hash: "#/profile"
+        }
       }
 
       return model;
