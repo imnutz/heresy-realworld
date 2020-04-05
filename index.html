@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>---Conduit---</title>
+  <link rel="stylesheet" href="//demo.productionready.io/main.css">
+  <script>
+		if(this.customElements)
+			try{customElements.define('built-in',document.createElement('p').constructor,{'extends':'p'})}
+			catch(a){document.write('<script src="//unpkg.com/@ungap/custom-elements-builtin"><'+'/script>')}
+		else
+      document.write('<script src="//unpkg.com/document-register-element"><'+'/script>');
+  </script>
+  <script type="module" src="dist/conduit.js"></script>
+</head>
+<body>
+
+</body>
+</html>
